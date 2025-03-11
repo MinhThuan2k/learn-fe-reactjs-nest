@@ -3,37 +3,44 @@ import DashboardLayout from '@/layouts/DashboardLayout'
 import AccountInfosEdit from '@/pages/AccountInfos/AccountInfosEdit'
 import AccountInfos from '@/pages/AccountInfos/AccountInfosView'
 import BoardPage from '@/pages/Projects/BoardPage'
+import { createBrowserRouter } from 'react-router-dom'
 
 export const routes = [
   {
     path: '/',
-    element: DashboardLayout,
+    Component: DashboardLayout,
     children: [
       {
         index: true,
         path: '/',
-        element: BoardPage
+        Component: BoardPage
       },
       {
         path: '/board',
-        element: AccountInfos
+        Component: AccountInfos
       }
     ]
   },
   {
     path: '/account-info',
-    element: AccountInfoLayout,
+    Component: AccountInfoLayout,
     children: [
       {
         index: true,
         path: '',
-        element: AccountInfos
+        Component: AccountInfos
       },
       {
         index: false,
         path: 'edit',
-        element: AccountInfosEdit
+        Component: AccountInfosEdit
       }
     ]
   }
 ]
+
+export const router = createBrowserRouter(routes, {
+  future: {
+    v7_relativeSplatPath: true
+  }
+})

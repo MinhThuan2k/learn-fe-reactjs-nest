@@ -9,7 +9,7 @@ export default function SideBar() {
   const handleHoverOut = () => setIsHover(false)
 
   return (
-    <div className='relative h-screen flex items-center mr-0'>
+    <div className='relative h-screen flex items-center mr-0 border-r-2 shadow-xs border-r-gray-200'>
       <div
         className={clsx(
           'flex flex-col items-center h-full overflow-y-auto text-gray-700 bg-white rounded',
@@ -94,7 +94,7 @@ export default function SideBar() {
               </span>
             </a>
             <a
-              className='flex items-center w-full h-12 px-3 mt-2 bg-gray-300 rounded'
+              className='flex items-center w-full h-12 px-3 mt-2 bg-blue-100 rounded'
               href='#'
             >
               <svg

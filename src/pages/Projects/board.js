@@ -24,5 +24,65 @@ export const board = [
         assignee: 'TL'
       }
     ]
+  },
+  {
+    title_process: 'In-Progress',
+    tasks: [
+      {
+        code: 'VTH-13',
+        title: 'Dịch các column khi xuất file Sản phẩm',
+        assignee: 'TL'
+      }
+    ]
+  },
+  {
+    title_process: 'In-Progress',
+    tasks: [
+      {
+        code: 'VTH-14',
+        title: 'Dịch các column khi xuất file Sản phẩm',
+        assignee: 'TL'
+      }
+    ]
+  },
+  {
+    title_process: 'In-Progress',
+    tasks: [
+      {
+        code: 'VTH-15',
+        title: 'Dịch các column khi xuất file Sản phẩm',
+        assignee: 'TL'
+      }
+    ]
+  },
+  {
+    title_process: 'In-Progress',
+    tasks: [
+      {
+        code: 'VTH-16',
+        title: 'Dịch các column khi xuất file Sản phẩm',
+        assignee: 'TL'
+      }
+    ]
+  },
+  {
+    title_process: 'In-Progress',
+    tasks: [
+      {
+        code: 'VTH-17',
+        title: 'Dịch các column khi xuất file Sản phẩm',
+        assignee: 'TL'
+      }
+    ]
+  },
+  {
+    title_process: 'In-Progress',
+    tasks: [
+      {
+        code: 'VTH-18',
+        title: 'Dịch các column khi xuất file Sản phẩm',
+        assignee: 'TL'
+      }
+    ]
   }
 ]
