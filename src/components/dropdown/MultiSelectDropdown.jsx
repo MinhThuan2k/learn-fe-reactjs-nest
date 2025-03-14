@@ -49,7 +49,7 @@ export default function MultiSelectDropdown({
   }, [])
 
   return (
-    <div className='relative z-100 h-full' ref={dropdownRef}>
+    <div className='relative h-full' ref={dropdownRef}>
       <div
         className={clsx(
           'cursor-pointer font-medium h-full px-2 py-1 flex items-center justify-center',
