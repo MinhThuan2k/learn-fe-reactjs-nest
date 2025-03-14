@@ -1,23 +1,17 @@
 name: Deploy React App to Vercel
 
 on:
-  pull_request:
-    types:
-      - closed  # Chạy khi PR được merge vào main 
+  push:
+    branches:
+      - main  # Chạy khi có code push lên nhánh `main`
+  #pull_request:
+    #branches:
+      #- main  # Kiểm tra khi có Pull Request vào `main`
 
 jobs:
-  prevent-direct-commit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: ❌ Block Direct Commits to Main
-        if: github.event_name == 'push'
-        run: |
-          echo "🚨 ERROR: Direct commits to 'main' are not allowed. Please use a pull request."
-          exit 1
-
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true  # Chỉ chạy nếu PR được merge
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
@@ -25,7 +19,7 @@ jobs:
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18  # React 19 yêu cầu Node 18+
+          node-version: 18 # React 19 yêu cầu Node 18+
 
       - name: 📦 Install dependencies
         run: npm install
