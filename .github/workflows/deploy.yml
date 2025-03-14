@@ -3,7 +3,7 @@ name: Deploy React App to Vercel
 on:
   push:
     branches:
-      - main  # Chạy khi có code push lên nhánh `main`
+      - main  # Chạy khi có code push lên nhánh `main`a
   #pull_request:
     #branches:
       #- main  # Kiểm tra khi có Pull Request vào `main`
