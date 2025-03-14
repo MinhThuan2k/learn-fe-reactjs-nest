@@ -3,7 +3,7 @@ name: Deploy React App to Vercel
 on:
   pull_request:
     types:
-      - closed  # Chạy khi PR được merge vào main
+      - closed  # Chạy khi PR được merge vào main 
 
 jobs:
   prevent-direct-commit:
