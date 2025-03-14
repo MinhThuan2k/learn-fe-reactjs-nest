@@ -9,6 +9,14 @@ on:
       - main  # Kiểm tra khi có Pull Request vào `main`
 
 jobs:
+#Protect Main Branch
+  prevent-direct-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ❌ Block Direct Commits
+        run: |
+          echo "🚨 ERROR: Direct commits to 'main' are not allowed. Please use a pull request."
+          exit 1
   build-and-deploy:
     runs-on: ubuntu-latest
 
