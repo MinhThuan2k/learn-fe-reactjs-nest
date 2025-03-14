@@ -21,7 +21,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     needs: prevent-direct-commit  # Chỉ chạy nếu kiểm tra commit hợp lệ
-    if: github.event_name == 'push'  # Chỉ chạy khi merge PR vào main
+    if: github.event_name == 'pull_request'  # Chỉ chạy khi merge PR vào main
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
