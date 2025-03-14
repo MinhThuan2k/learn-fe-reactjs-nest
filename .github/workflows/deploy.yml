@@ -1,12 +1,9 @@
 name: Deploy React App to Vercel
 
 on:
-  push:
-    branches:
-      - main  # Chạy khi có code push vào `main` (sau khi merge PR)
   pull_request:
-    branches:
-      - main  # Chạy khi có PR vào `main`
+    types:
+      - closed  # Chạy khi PR được merge vào main
 
 jobs:
   prevent-direct-commit:
@@ -20,8 +17,7 @@ jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
-    needs: prevent-direct-commit  # Chỉ chạy nếu kiểm tra commit hợp lệ
-    if: github.event_name == 'pull_request'  # Chỉ chạy khi merge PR vào main
+    if: github.event.pull_request.merged == true  # Chỉ chạy nếu PR được merge
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
