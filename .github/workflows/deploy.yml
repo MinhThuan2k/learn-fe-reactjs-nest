@@ -1,0 +1,31 @@
+name: Deploy React App to Vercel
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có code push lên nhánh `main`
+  pull_request:
+    branches:
+      - main  # Kiểm tra khi có Pull Request vào `main`
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18 # React 19 yêu cầu Node 18+
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🛠️ Build project
+        run: npm run build
+
+      - name: 🚀 Deploy to Vercel
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
