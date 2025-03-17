@@ -1,10 +1,27 @@
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import MultiSelectDropdown from '../dropdown/MultiSelectDropdown'
+import { useLocation } from 'react-router-dom'
+import clsx from 'clsx'
+import Popup from '../popups/Popup'
+import { useState } from 'react'
+
 export default function Nav() {
+  const location = useLocation()
+  const [openIndex, setOpenIndex] = useState(null)
+
+  const navData = [
+    { title: 'Your word', path: '/your-word' },
+    { title: 'Projects', path: '/projects', props: [] },
+    { title: 'Filter', path: '/filter' },
+    { title: 'Dashboards', path: '/dashboard' },
+    { title: 'Teams', path: '/teams' },
+    { title: 'Apps', path: '/' }
+  ]
+
   return (
     <div className='w-screen mx-auto flex flex-wrap'>
       <div className='w-full'>
-        <div className='flex items-center justify-between gap-1 text-[#42526E] bg-white rounded-tl-lg rounded-tr-lg border-b-2 shadow-xs border-b-gray-200 font-medium'>
+        <div className='flex items-center justify-between gap-1 px-5 text-[#42526E] bg-white rounded-tl-lg rounded-tr-lg border-b-2 shadow-xs border-b-gray-200 font-medium'>
           <div className='flex gap-1 items-center'>
             <span className='px-2 mr-2'>
               <i className='fa-solid fa-list inline'></i>
@@ -28,24 +45,31 @@ export default function Nav() {
                 ></path>
               </svg>
             </span>
-            <span className='cursor-pointer  text-sm py-2'>
-              <MultiSelectDropdown title={'Your word'} />
-            </span>
-            <span className='cursor-pointer text-sm py-2 border-b-3 border-blue-700'>
-              <MultiSelectDropdown title={'Project'} />
-            </span>
-            <span className='cursor-pointer text-sm py-2'>
-              <MultiSelectDropdown title={'Filter'} />
-            </span>
-            <span className='cursor-pointer text-sm py-2'>
-              <MultiSelectDropdown title={'Dashboards'} />
-            </span>
-            <span className='cursor-pointer text-sm py-2'>
-              <MultiSelectDropdown title={'Teams'} />
-            </span>
-            <span className='cursor-pointer text-sm py-2'>
-              <MultiSelectDropdown title={'Apps'} />
-            </span>
+            {navData.map((item, index) => {
+              const isActive =
+                item.path === '/'
+                  ? location.pathname === '/'
+                  : location.pathname.startsWith(item.path)
+              const isOpen = openIndex === index
+              return (
+                <div
+                  className={clsx(
+                    'cursor-pointer py-3',
+                    isActive
+                      ? 'border-b-4 border-blue-700 font-semibold text-blue-700'
+                      : 'text-gray-600'
+                  )}
+                  key={index}
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                >
+                  <span className='text-sm font-medium px-2 py-2 hover:bg-gray-100 '>
+                    {item.title}
+                    <i className='fa-solid fa-angle-down pl-1' />
+                  </span>
+                  {isOpen && <Popup title={'Recent'} isOpenProp={isOpen} />}
+                </div>
+              )
+            })}
             <span className='cursor-pointer text-white text-sm py-2'>
               <button className='py-1 px-2 bg-blue-600 rounded-xs'>
                 Create
@@ -68,10 +92,10 @@ export default function Nav() {
               </span>
             </span>
             <span className='cursor-pointer'>
-              <i class='text-lg fa-solid fa-circle-question p-2' />
+              <i className='text-lg fa-solid fa-circle-question p-2' />
             </span>
             <span className='cursor-pointer'>
-              <i class='text-lg fa-solid fa-gear p-2' />
+              <i className='text-lg fa-solid fa-gear p-2' />
             </span>
             <a className='w-6 h-6 rounded-full bg-green-600 text-[10px] text-white text-center p-1 cursor-pointer'>
               TL

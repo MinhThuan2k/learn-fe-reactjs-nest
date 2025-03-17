@@ -1,3 +1,4 @@
+import App from '@/App'
 import AccountInfoLayout from '@/layouts/AccountInfoLayout'
 import DashboardLayout from '@/layouts/DashboardLayout'
 import AccountInfosEdit from '@/pages/AccountInfos/AccountInfosEdit'
@@ -8,22 +9,26 @@ import { createBrowserRouter } from 'react-router-dom'
 export const routes = [
   {
     path: '/',
+    Component: App
+  },
+  {
+    path: '/projects',
     Component: DashboardLayout,
     children: [
       {
         index: true,
-        path: '/',
+        path: ':projectId',
         Component: BoardPage
       },
       {
-        path: '/board',
+        path: 'board',
         Component: AccountInfos
       }
     ]
   },
   {
     path: '/account-info',
-    Component: AccountInfoLayout,
+    Component: DashboardLayout,
     children: [
       {
         index: true,

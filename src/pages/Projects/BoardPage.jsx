@@ -95,7 +95,7 @@ const Task = ({ task, index, processIdx, moveTask }) => {
                 className='fa-solid fa-equals px-3'
                 style={{ color: '#e3a316' }}
               />
-              <a className='w-6 h-6 p-1 rounded-full bg-green-600 text-white text-center text-xs font-semibold cursor-pointer'>
+              <a className='w-6 h-6 p-1 rounded-full bg-green-600 text-white text-center text-[10px] font-semibold cursor-pointer'>
                 {task.assignee}
               </a>
             </div>
@@ -119,7 +119,7 @@ const Process = ({ process, processIdx, moveTask }) => {
       ref={drop}
       className='flex flex-col items-center w-64 bg-[#F7F8F9] shadow-lg rounded-sm'
     >
-      <span className='sticky top-0 w-64 text-sm text-[#626f86] font-medium p-3 bg-[#F7F8F9] border-b border-b-gray-300 z-10'>
+      <span className='sticky top-0 w-64 text-xs text-[#626f86] font-medium p-3 bg-[#F7F8F9] border-b border-b-gray-300 z-1'>
         {process.title_process}
       </span>
       {process.tasks.map((task, index) => {
@@ -183,7 +183,7 @@ const Head = () => {
             <a className='w-7 h-7 p-1.5 rounded-full bg-green-600 text-white text-center cursor-pointer'>
               TL
             </a>
-            <a className='w-7 h-7 -ml-1.5 p-1.5  rounded-full bg-blue-600 text-white text-center cursor-pointer'>
+            <a className='w-7 h-7 -ml-1.5 p-1.5 rounded-full bg-blue-600 text-white text-center cursor-pointer'>
               TL
             </a>
             <a className='w-7 h-7 -ml-1.5 p-1.5 rounded-full bg-yellow-600 text-white text-center cursor-pointer'>
@@ -226,11 +226,11 @@ const Head = () => {
             None <i className='fa-solid fa-angle-down pl-1' />
           </button>
           <button className='py-1 px-2 bg-gray-200'>
-            <i class='fa-solid fa-chart-line pr-2' />
+            <i className='fa-solid fa-chart-line pr-2' />
             Insights
           </button>
           <button className='py-1 px-2 bg-gray-200'>
-            <i class='fa-solid fa-sliders pr-2' />
+            <i className='fa-solid fa-sliders pr-2' />
             View settings
           </button>
         </div>
