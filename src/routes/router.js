@@ -12,7 +12,7 @@ export const routes = [
     Component: App
   },
   {
-    path: '/projects',
+    path: 'projects',
     Component: DashboardLayout,
     children: [
       {
@@ -27,7 +27,7 @@ export const routes = [
     ]
   },
   {
-    path: '/account-info',
+    path: 'account-info',
     Component: DashboardLayout,
     children: [
       {
