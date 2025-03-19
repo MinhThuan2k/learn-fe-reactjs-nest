@@ -1,13 +1,15 @@
 import '@fortawesome/fontawesome-free/css/all.min.css'
-import MultiSelectDropdown from '../dropdown/MultiSelectDropdown'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import clsx from 'clsx'
 import Popup from '../popups/Popup'
 import { useState } from 'react'
+import { ChevronRight, Star } from 'lucide-react'
+import { useOutsideClick } from '@/hooks/hooks'
 
 export default function Nav() {
   const location = useLocation()
   const [openIndex, setOpenIndex] = useState(null)
+  const [isMoreOpen, setIsMoreOpen] = useState(false)
 
   const navData = [
     { title: 'Your word', path: '/your-word' },
@@ -18,12 +20,28 @@ export default function Nav() {
     { title: 'Apps', path: '/' }
   ]
 
+  const projects = [
+    {
+      code: 'VTH-WMS',
+      sub_name: 'Software project',
+      image:
+        'https://mekshipteam.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10408?size=xxlarge'
+    },
+    {
+      code: 'VTH-TMS',
+      sub_name: 'Software project',
+      image:
+        'https://mekshipteam.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10408?size=xxlarge'
+    }
+  ]
+  const dropdownRef = useOutsideClick(() => setIsMoreOpen(false))
+
   return (
-    <div className='w-screen mx-auto flex flex-wrap'>
+    <div className='w-screen mx-auto flex'>
       <div className='w-full'>
-        <div className='flex items-center justify-between gap-1 px-5 text-[#42526E] bg-white rounded-tl-lg rounded-tr-lg border-b-2 shadow-xs border-b-gray-200 font-medium'>
+        <div className='flex items-center justify-between gap-1 px-5 text-[#42526E]  rounded-tl-lg rounded-tr-lg border-b-2 shadow-xs border-b-gray-200 font-medium'>
           <div className='flex gap-1 items-center'>
-            <span className='px-2 mr-2'>
+            <span className='px-2 cursor-pointer'>
               <i className='fa-solid fa-list inline'></i>
             </span>
             <span className='cursor-pointer hover:bg-gray-200 hover:text-gray-700 text-sm rounded py-2 pr-2'>
@@ -45,31 +63,122 @@ export default function Nav() {
                 ></path>
               </svg>
             </span>
-            {navData.map((item, index) => {
-              const isActive =
-                item.path === '/'
-                  ? location.pathname === '/'
-                  : location.pathname.startsWith(item.path)
-              const isOpen = openIndex === index
-              return (
-                <div
-                  className={clsx(
-                    'cursor-pointer py-3',
-                    isActive
-                      ? 'border-b-4 border-blue-700 font-semibold text-blue-700'
-                      : 'text-gray-600'
-                  )}
-                  key={index}
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                >
-                  <span className='text-sm font-medium px-2 py-2 hover:bg-gray-100 '>
-                    {item.title}
-                    <i className='fa-solid fa-angle-down pl-1' />
-                  </span>
-                  {isOpen && <Popup title={'Recent'} isOpenProp={isOpen} />}
-                </div>
-              )
-            })}
+
+            <div className='relative'>
+              <button
+                className='lg:hidden cursor-pointer text-white text-sm px-2 py-1 bg-gray-400 rounded-xs whitespace-nowrap'
+                onClick={() => setIsMoreOpen(!isMoreOpen)}
+              >
+                More +
+              </button>
+              <div
+                className={clsx(
+                  'absolute bg-gray-50 z-50 shadow-2xl lg:relative lg:flex min-w-max',
+                  { hidden: !isMoreOpen }
+                )}
+                ref={dropdownRef}
+              >
+                {navData.map((item, index) => {
+                  const isActive =
+                    item.path === '/'
+                      ? location.pathname === '/'
+                      : location.pathname.startsWith(item.path)
+                  const isOpen = openIndex === index
+
+                  return (
+                    <div
+                      className={clsx(
+                        'py-2 max-lg:py-1',
+                        isActive
+                          ? 'border-b-3 border-blue-700 font-semibold text-blue-700 min-h-max max-lg:border-none max-lg:text-gray-600'
+                          : 'text-gray-600'
+                      )}
+                      key={index}
+                    >
+                      <div
+                        className='w-full flex items-center justify-center cursor-pointer transition-opacity duration-300 hover:bg-gray-200 p-1 py-0'
+                        onClick={() => setOpenIndex(isOpen ? null : index)}
+                      >
+                        <span
+                          className={clsx(
+                            'w-full text-[13px] font-medium block py-1.5'
+                          )}
+                        >
+                          {item.title}
+                        </span>
+                        <ChevronRight size={20} className='pl-1 font-medium' />
+                      </div>{' '}
+                      <Popup isOpenProp={isOpen}>
+                        <span className='text-xs text-[#42526E] ml-5'>
+                          Recent
+                        </span>
+                        <div className='flex flex-col items-center cursor-pointer w-60 mt-2'>
+                          {projects.map((item) => (
+                            <Link
+                              className='group flex items-center justify-between gap-2 w-full min-w-max pb-2 text-[#42526E] hover:bg-gray-200'
+                              to={`/projects/${item.code}`}
+                              key={item.code}
+                            >
+                              <div className='h-6 w-full flex items-center pl-5 mt-2 gap-2'>
+                                <img
+                                  src={item.image}
+                                  alt='img-project'
+                                  className='h-full object-cover'
+                                />
+                                <div className='flex flex-col gap-0'>
+                                  <span className='text-xs'>{item.code}</span>
+                                  <span className='text-xs text-[#8a92a0]'>
+                                    {item.sub_name}
+                                  </span>
+                                </div>
+                              </div>
+                              <Star
+                                size={18}
+                                className='mt-2 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'
+                              />
+                            </Link>
+                          ))}
+                        </div>
+                        <div className='mt-2 pt-2 text-sm text-[#42526E] font-semibold border-t-2 border-gray-200'>
+                          <span className='w-full py-1 pl-4 text-xs text-left'>
+                            INCLUDED FREE WITH YOUR PLAN
+                          </span>
+                          <div
+                            className='flex items-center justify-between gap-2 w-full min-w-max pb-2 mt-3 text-[#42526E] hover:bg-gray-200'
+                            href='#'
+                            hidden={!isOpen}
+                          >
+                            <div className='h-6 w-full flex items-center mt-2 pl-5 gap-2'>
+                              <img
+                                src='https://mekshipteam.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10408?size=xxlarge'
+                                alt='img-project'
+                                className='h-full object-cover'
+                              />
+                              <div className='flex flex-col gap-0'>
+                                <span className='text-xs'>VTH-WMS</span>
+                                <span className='text-xs text-[#8a92a0]'>
+                                  Software project
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className='mt-2 pt-2 text-sm text-[#42526E] font-semibold border-t-2 border-gray-200'>
+                          <button className='w-full py-1 pl-4 text-left hover:bg-gray-200'>
+                            View all projects
+                          </button>
+                          <button className='w-full py-1 pl-4 text-left hover:bg-gray-200'>
+                            Create project
+                          </button>
+                        </div>
+                      </Popup>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
             <span className='cursor-pointer text-white text-sm py-2'>
               <button className='py-1 px-2 bg-blue-600 rounded-xs'>
                 Create
@@ -81,7 +190,7 @@ export default function Nav() {
               <input
                 type='text'
                 placeholder='Search'
-                className='border border-[#6B778C] rounded-xs pl-8 p-1 text-sm focus:outline-none focus:border-blue-700 transition-all duration-200'
+                className='max-w-40 border border-[#6B778C] rounded-xs pl-6 p-1 text-sm focus:outline-none focus:border-blue-700 transition-all duration-200'
               />
               <i className='fa-solid fa-magnifying-glass absolute left-2 top-1/2 transform -translate-y-1/2 text-xs text-[#6B778C]'></i>
             </div>

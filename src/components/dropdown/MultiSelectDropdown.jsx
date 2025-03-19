@@ -9,7 +9,9 @@ export default function MultiSelectDropdown({
   defaultValue = [],
   onChange,
   title,
-  width
+  width,
+  icon,
+  styleTitle
 }) {
   const [selectedOptions, setSelectedOptions] = useState(defaultValue)
   const [isOpen, setIsOpen] = useState(false)
@@ -49,10 +51,10 @@ export default function MultiSelectDropdown({
   }, [])
 
   return (
-    <div className='relative h-full' ref={dropdownRef}>
+    <div className='relative w-full h-full' ref={dropdownRef}>
       <div
         className={clsx(
-          'cursor-pointer font-medium h-full px-2 py-1 flex items-center justify-center',
+          'cursor-pointer font-medium min-w-max h-full px-2 py-1 flex items-center justify-between',
           {
             'bg-blue-100 text-blue-700': isOpen,
             'hover:bg-gray-100': !isOpen
@@ -60,8 +62,8 @@ export default function MultiSelectDropdown({
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>{title}</span>
-        <i className='fa-solid fa-angle-down pl-1' />
+        <span className={styleTitle}>{title}</span>
+        {icon ? icon : <i className='fa-solid fa-angle-down pl-1' />}
       </div>
       {isOpen && options.length > 0 && (
         <div

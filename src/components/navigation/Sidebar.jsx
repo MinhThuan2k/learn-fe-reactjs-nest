@@ -5,6 +5,8 @@ import {
   CalendarDays,
   ChartLine,
   ChartNoAxesGantt,
+  ChevronLeft,
+  ChevronRight,
   Code,
   Columns3,
   FileText,
@@ -18,7 +20,6 @@ import { Link } from 'react-router-dom'
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(true)
-  const [isHover, setIsHover] = useState(false)
   const [sideBars, setSideBars] = useState([
     {
       title: 'PLANNING',
@@ -46,16 +47,6 @@ export default function SideBar() {
     }
   ])
 
-  const handleMouseEnter = () => setIsHover(true)
-  const handleMouseLeave = (event) => {
-    if (
-      !event.currentTarget &&
-      !event.currentTarget.contains(event.relatedTarget)
-    ) {
-      setIsHover(false)
-    }
-  }
-
   const handleOpenIndex = (index) => {
     setSideBars((prev) =>
       prev.map((item, i) =>
@@ -65,30 +56,26 @@ export default function SideBar() {
   }
 
   return (
-    <div className='relative h-screen flex items-center border-r-2 shadow-xs border-r-gray-200'>
+    <div className='relative h-screen flex items-center border-r-2 shadow-xs overflow-visible z-10 border-r-gray-200 top-1 max-lg:top-0 max-lg:mr-5 max-lg:border-none'>
       <div
         className={clsx(
-          'flex flex-col items-center h-full overflow-y-auto text-gray-700 bg-white rounded',
-          isOpen ? 'w-48' : 'w-16'
+          'flex flex-col items-center h-full overflow-y-auto text-gray-700 bg-gray-50 rounded transition-all duration-500 z-10 max-lg:rounded-none max-lg:absolute max-lg:overflow-visible max-lg:shadow-xs max-lg:border-r-2 max-lg:border-r-gray-200',
+          isOpen ? 'w-48' : 'w-5'
         )}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
-        {isHover && (
-          <div className='absolute top-5 right-[-12px] z-50'>
-            <button
-              className='flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full shadow-md'
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              <i
-                className={clsx(
-                  isOpen ? 'fa-solid fa-arrow-left' : 'fa-solid fa-arrow-right'
-                )}
-              />
-            </button>
-          </div>
-        )}
+        <div className='absolute top-5 right-[-12px]'>
+          <button
+            className='flex items-center justify-center w-6 h-6 bg-white text-gray-400 border border-gray-300 hover:bg-blue-500 hover:text-white rounded-full shadow-md cursor-pointer'
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <ChevronLeft size={18} strokeWidth={3} className='pl-0' />
+            ) : (
+              <ChevronRight size={18} strokeWidth={3} className='pl-0.5' />
+            )}
+          </button>
+        </div>
         {isOpen ? (
           <div className='w-full'>
             <div className='flex items-center justify-start w-full h-10 px-3 py-10'>
@@ -97,12 +84,12 @@ export default function SideBar() {
                 alt='img-project'
                 className='w-6'
               />
-              <div className='ml-3 mt-2 h-6'>
+              <div className='ml-3 mt-2 h-6 whitespace-nowrap'>
                 <h2 className='text-xs font-bold leading-0.5'>VTH-WMS</h2>
                 <span className='text-xs'>Software project</span>
               </div>
             </div>
-            <div className='w-full pl-2'>
+            <div className='w-full pl-2 whitespace-nowrap'>
               {sideBars.map((sideBar, sideBarKey) => (
                 <div className='w-full mt-3' key={sideBarKey}>
                   <span
@@ -132,7 +119,7 @@ export default function SideBar() {
             </div>
           </div>
         ) : (
-          <div className='w-10 h-10 px-3 py-10'></div>
+          <div className='w-10 h-full px-3 py-10'></div>
         )}
       </div>
     </div>
