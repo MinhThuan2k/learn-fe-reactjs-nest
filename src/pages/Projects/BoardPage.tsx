@@ -6,14 +6,18 @@ import MultiSelectDropdown from '@/components/dropdown/MultiSelectDropdown'
 import { CircleUser } from 'lucide-react'
 import clsx from 'clsx'
 import { useOutsideClick } from '@/hooks/hooks'
+import Process from './Process'
 
 export default function BoardPage() {
   const [boardData, setBoardData] = useState(board)
 
   const moveTask = useCallback(
-    (fromProcessIdx, toProcessIdx, fromTaskIdx, toTaskIdx) => {
-      console.log(fromProcessIdx, toProcessIdx, fromTaskIdx, toTaskIdx)
-
+    (
+      fromProcessIdx: number,
+      toProcessIdx: number,
+      fromTaskIdx: number,
+      toTaskIdx: number
+    ) => {
       setBoardData((prevBoardData) => {
         const newBoardData = [...prevBoardData]
         const task = newBoardData[fromProcessIdx].tasks.splice(
@@ -54,92 +58,6 @@ export default function BoardPage() {
   )
 }
 
-const Task = ({ task, index, processIdx, moveTask }) => {
-  const [{ isDragging }, drag] = useDrag({
-    type: 'TASK',
-    item: { id: task.code, index, processIdx },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
-  })
-
-  const [, drop] = useDrop({
-    accept: 'TASK',
-    hover: (item, monitor) => {
-      if (item.index === index && item.processIdx === processIdx) {
-        return
-      }
-      moveTask(item.processIdx, processIdx, item.index, index)
-      item.index = index
-      item.processIdx = processIdx
-    }
-  })
-
-  return (
-    <li
-      ref={(node) => drag(drop(node))}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
-      className='w-[calc(100%-7px)] bg-white shadow mb-1'
-    >
-      <div className='flex flex-col items-center justify-center'>
-        <div className='w-10 min-h-10 bg-gray-200'></div>
-        <div className='flex flex-col justify-center items-center p-2'>
-          <span className='text-sm'>{task.title}</span>
-          <div className='flex w-full items-center justify-between pt-1'>
-            <div className='flex items-center'>
-              <i
-                className='fa-solid fa-square-check'
-                style={{ color: '#74C0FC' }}
-              />
-              <span className='text-sm p-2'>{task.code}</span>
-            </div>
-            <div className='flex items-center text-sm'>
-              <i
-                className='fa-solid fa-equals px-3'
-                style={{ color: '#e3a316' }}
-              />
-              <a className='w-6 h-6 p-1 rounded-full bg-green-600 text-white text-center text-[10px] font-semibold cursor-pointer'>
-                {task.assignee}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </li>
-  )
-}
-
-const Process = ({ process, processIdx, moveTask }) => {
-  const [, drop] = useDrop({
-    accept: 'TASK',
-    drop: (item, monitor) => {
-      moveTask(item.processIdx, processIdx, item.index, process.tasks.length)
-    }
-  })
-
-  return (
-    <ul
-      ref={drop}
-      className='flex flex-col items-center w-64 bg-[#F7F8F9] shadow-lg rounded-sm'
-    >
-      <span className='sticky top-0 w-64 text-xs text-[#626f86] font-medium p-3 bg-[#F7F8F9] border-b border-b-gray-300 z-1'>
-        {process.title_process}
-      </span>
-      {process.tasks.map((task, index) => {
-        return task ? (
-          <Task
-            key={task.code}
-            task={task}
-            index={index}
-            processIdx={processIdx}
-            moveTask={moveTask}
-          />
-        ) : null
-      })}
-    </ul>
-  )
-}
-
 const Head = () => {
   const COUNTRIES = [
     { name: 'Austria', code: 'AU' },
@@ -148,7 +66,7 @@ const Head = () => {
     { name: 'Bulgaria', code: 'BG' },
     { name: 'Cyprus', code: 'CY' }
   ]
-  const [label, setLabel] = useState()
+  const [label, setLabel] = useState([])
   const [isOpenFilter, setIsOpenFilter] = useState(false)
   const dropdownRef = useOutsideClick(() => setIsOpenFilter(false))
 

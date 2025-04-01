@@ -2,6 +2,22 @@ import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 // import { ChevronDown } from 'lucide-react'
 
+interface Option {
+  [key: string]: any
+}
+
+interface MultiSelectDropdownProps {
+  fieldValue: string
+  fieldTitle: string
+  options: Option[]
+  defaultValue?: []
+  onChange: any
+  title: string
+  width?: string
+  icon?: React.ReactNode
+  styleTitle?: string
+}
+
 export default function MultiSelectDropdown({
   fieldValue,
   fieldTitle,
@@ -12,13 +28,16 @@ export default function MultiSelectDropdown({
   width,
   icon,
   styleTitle
-}) {
-  const [selectedOptions, setSelectedOptions] = useState(defaultValue)
+}: MultiSelectDropdownProps) {
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>(defaultValue)
   const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef(null)
-  const [hoveredText, setHoveredText] = useState('')
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [hoveredText, setHoveredText] = useState<any>('')
 
-  const handleChange = (e, option) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    option: Option
+  ) => {
     const isChecked = e.target.checked
 
     setSelectedOptions((prevSelected) => {
@@ -39,8 +58,11 @@ export default function MultiSelectDropdown({
   }
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -71,7 +93,6 @@ export default function MultiSelectDropdown({
             'absolute min-w-36 mt-1 pb-2 bg-white z-10 max-h-48 overflow-y-auto shadow-2xl',
             { 'max-w-40': !width }
           )}
-          style={width ? { width: width } : null}
         >
           {options.map((option, index) => (
             <label
