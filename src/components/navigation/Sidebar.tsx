@@ -47,7 +47,7 @@ export default function SideBar() {
     }
   ])
 
-  const handleOpenIndex = (index) => {
+  const handleOpenIndex = (index: number | string) => {
     setSideBars((prev) =>
       prev.map((item, i) =>
         i === index ? { ...item, open: !item.open } : item

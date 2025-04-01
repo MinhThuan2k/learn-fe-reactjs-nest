@@ -2,16 +2,28 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import { Link, useLocation } from 'react-router-dom'
 import clsx from 'clsx'
 import Popup from '../popups/Popup'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { ChevronRight, Star } from 'lucide-react'
 import { useOutsideClick } from '@/hooks/hooks'
 
+interface NavData {
+  title: string
+  path: string
+  props?: any[]
+}
+
+interface Project {
+  code: string
+  sub_name: string
+  image: string
+}
+
 export default function Nav() {
   const location = useLocation()
-  const [openIndex, setOpenIndex] = useState(null)
-  const [isMoreOpen, setIsMoreOpen] = useState(false)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [isMoreOpen, setIsMoreOpen] = useState<boolean>(false)
 
-  const navData = [
+  const navData: NavData[] = [
     { title: 'Your word', path: '/your-word' },
     { title: 'Projects', path: '/projects', props: [] },
     { title: 'Filter', path: '/filter' },
@@ -20,7 +32,7 @@ export default function Nav() {
     { title: 'Apps', path: '/' }
   ]
 
-  const projects = [
+  const projects: Project[] = [
     {
       code: 'VTH-WMS',
       sub_name: 'Software project',
@@ -34,12 +46,17 @@ export default function Nav() {
         'https://mekshipteam.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10408?size=xxlarge'
     }
   ]
+
   const dropdownRef = useOutsideClick(() => setIsMoreOpen(false))
+
+  const handleToggleMore = useCallback(() => {
+    setIsMoreOpen((prevState) => !prevState)
+  }, [])
 
   return (
     <div className='w-screen mx-auto flex'>
       <div className='w-full'>
-        <div className='flex items-center justify-between gap-1 px-5 text-[#42526E]  rounded-tl-lg rounded-tr-lg border-b-2 shadow-xs border-b-gray-200 font-medium'>
+        <div className='flex items-center justify-between gap-1 px-5 text-[#42526E] rounded-tl-lg rounded-tr-lg border-b-2 shadow-xs border-b-gray-200 font-medium'>
           <div className='flex gap-1 items-center'>
             <span className='px-2 cursor-pointer'>
               <i className='fa-solid fa-list inline'></i>
@@ -67,7 +84,7 @@ export default function Nav() {
             <div className='relative'>
               <button
                 className='lg:hidden cursor-pointer text-white text-sm px-2 py-1 bg-gray-400 rounded-xs whitespace-nowrap'
-                onClick={() => setIsMoreOpen(!isMoreOpen)}
+                onClick={handleToggleMore}
               >
                 More +
               </button>
@@ -107,28 +124,30 @@ export default function Nav() {
                           {item.title}
                         </span>
                         <ChevronRight size={20} className='pl-1 font-medium' />
-                      </div>{' '}
+                      </div>
                       <Popup isOpenProp={isOpen}>
                         <span className='text-xs text-[#42526E] ml-5'>
                           Recent
                         </span>
                         <div className='flex flex-col items-center cursor-pointer w-60 mt-2'>
-                          {projects.map((item) => (
+                          {projects.map((project) => (
                             <Link
                               className='group flex items-center justify-between gap-2 w-full min-w-max pb-2 text-[#42526E] hover:bg-gray-200'
-                              to={`/projects/${item.code}`}
-                              key={item.code}
+                              to={`/projects/${project.code}`}
+                              key={project.code}
                             >
                               <div className='h-6 w-full flex items-center pl-5 mt-2 gap-2'>
                                 <img
-                                  src={item.image}
+                                  src={project.image}
                                   alt='img-project'
                                   className='h-full object-cover'
                                 />
                                 <div className='flex flex-col gap-0'>
-                                  <span className='text-xs'>{item.code}</span>
+                                  <span className='text-xs'>
+                                    {project.code}
+                                  </span>
                                   <span className='text-xs text-[#8a92a0]'>
-                                    {item.sub_name}
+                                    {project.sub_name}
                                   </span>
                                 </div>
                               </div>
@@ -138,39 +157,6 @@ export default function Nav() {
                               />
                             </Link>
                           ))}
-                        </div>
-                        <div className='mt-2 pt-2 text-sm text-[#42526E] font-semibold border-t-2 border-gray-200'>
-                          <span className='w-full py-1 pl-4 text-xs text-left'>
-                            INCLUDED FREE WITH YOUR PLAN
-                          </span>
-                          <div
-                            className='flex items-center justify-between gap-2 w-full min-w-max pb-2 mt-3 text-[#42526E] hover:bg-gray-200'
-                            href='#'
-                            hidden={!isOpen}
-                          >
-                            <div className='h-6 w-full flex items-center mt-2 pl-5 gap-2'>
-                              <img
-                                src='https://mekshipteam.atlassian.net/rest/api/2/universal_avatar/view/type/project/avatar/10408?size=xxlarge'
-                                alt='img-project'
-                                className='h-full object-cover'
-                              />
-                              <div className='flex flex-col gap-0'>
-                                <span className='text-xs'>VTH-WMS</span>
-                                <span className='text-xs text-[#8a92a0]'>
-                                  Software project
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className='mt-2 pt-2 text-sm text-[#42526E] font-semibold border-t-2 border-gray-200'>
-                          <button className='w-full py-1 pl-4 text-left hover:bg-gray-200'>
-                            View all projects
-                          </button>
-                          <button className='w-full py-1 pl-4 text-left hover:bg-gray-200'>
-                            Create project
-                          </button>
                         </div>
                       </Popup>
                     </div>
