@@ -24,6 +24,9 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
+      - name: 📦 Copy ENV
+        run: cp .env.example .env
+
       - name: 🛠️ Build project
         run: npm run build
 
