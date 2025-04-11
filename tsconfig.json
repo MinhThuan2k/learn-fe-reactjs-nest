@@ -15,7 +15,7 @@
       },
       "moduleResolution": "node"
     },
-    "include": ["src/**/*", "module.d.ts"],
+    "include": ["src/**/*", "module.d.ts", "vite-env.d.ts"],
     "exclude": ["node_modules", "dist"]
   }
   

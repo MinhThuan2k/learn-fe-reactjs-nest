@@ -8,7 +8,7 @@ export default {
       },
       fontFamily: {
         sans: ['Helvetica', 'Arial', 'sans-serif'],
-        BlinkMacSystemFont: ['BlinkMacSystemFont']
+        BlinkMacSystemFont: ['BlinkMacSystemFont-Thin']
       }
     }
   },
